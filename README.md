@@ -1,7 +1,7 @@
 # Interceptor
 
-**Interceptor** is a JavaScript library that allows to intercept methods of an existing object, and inject new methods
-and properties.
+**Interceptor** is a JavaScript library that allows to intercept methods of an existing object, replacing their
+behaviours and injecting new methods and properties.
 
 Its purpose is manipulating easily objects created by third-part libraries.
 
