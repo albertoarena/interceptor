@@ -85,13 +85,6 @@ function interceptor(obj) {
             return this;
         },
 
-        invoke: function (methodName, args) {
-            if (typeof obj[methodName] == 'function') {
-                obj[methodName].apply(undefined, args);
-            }
-            return this;
-        },
-
         property: function (property, value) {
             var propertyType = typeof property;
             if (propertyType != 'function' && propertyType !== undefined && propertyType !== null && typeof obj[property] == 'undefined') {
