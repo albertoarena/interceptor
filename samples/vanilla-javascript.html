@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Interceptor Sample :: Vanilla Javascript</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <script src="../src/interceptor.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Interceptor Sample :: Vanilla Javascript</h1>
+
+    <pre id="logs"></pre>
+
+</div>
+
+<script>
+    // Define log function
+    var logMe = function (obj, s) {
+        var text = '[' + obj.getName() + '] ' + s;
+        var newParagraph = document.createElement("P");
+        newParagraph.appendChild(document.createTextNode(text));
+        document.getElementById('logs').appendChild(newParagraph);
+        console.log(text);
+    };
+
+    // Define an object
+    var Person = (function () {
+        return function (n) {
+            var self = this;
+            var name = n;
+            self.getName = function () {
+                return name;
+            };
+            self.setName = function (n) {
+                name = n;
+                return this;
+            };
+            self.sayHello = function () {
+                logMe(this, 'Hello');
+                return this;
+            }
+            return self;
+        };
+    })();
+
+    // Create some instances of the object
+    var Johnny = new Person('Johnny');
+    var Laura = new Person('Laura');
+
+    // Test methods
+    Johnny.sayHello();
+    Laura.sayHello();
+
+    // Inject methods
+    interceptor(Johnny)
+            .before('sayHello',function (obj) {
+                logMe(obj, 'I am going to say hello ...');
+            }).inject('sayGoodbye', function () {
+                logMe(this, 'Goodbye');
+                return this;
+            });
+    interceptor(Laura)
+            .after('sayHello',function (originalReturn, obj) {
+                logMe(obj, 'After saying hello ...');
+                return originalReturn;
+            }).inject('sayGoodbye', function () {
+                logMe(this, 'See you darling!');
+                return this;
+            });
+
+    // Test injected methods
+    Johnny.sayHello().sayGoodbye();
+    Laura.sayHello().sayGoodbye();
+
+</script>
+
+</body>
+</html>
+
