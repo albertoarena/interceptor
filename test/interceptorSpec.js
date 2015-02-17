@@ -21,7 +21,7 @@ describe("interceptor", function () {
             after: function (v, obj) {
                 return v + ' smith';
             },
-            before: function (v, obj) {
+            before: function (obj) {
                 //
             },
             conditional: function (args, obj) {
